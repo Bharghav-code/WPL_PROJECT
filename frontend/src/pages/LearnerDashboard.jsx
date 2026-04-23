@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import CategoryCard from '../components/CategoryCard';
 import TeacherCard from '../components/TeacherCard';
+import { motion } from 'framer-motion';
 
 const CATEGORIES = [
   { id: 'Music', icon: '🎵' },
@@ -29,43 +30,62 @@ export default function LearnerDashboard() {
     <div className="flex" style={{ backgroundColor: 'var(--bg-color)', minHeight: '100vh' }}>
       <Sidebar role="learner" />
       
-      <main style={{ flex: 1, padding: '32px 48px', overflowY: 'auto' }}>
-        <div style={{ 
-          background: 'linear-gradient(135deg, var(--primary-blue), var(--primary-dark))',
-          borderRadius: '16px',
-          padding: '48px',
-          color: 'white',
-          marginBottom: '48px'
-        }}>
-          <h1 style={{ fontSize: '36px', marginBottom: '16px' }}>Find your next skill.</h1>
-          <p style={{ fontSize: '18px', opacity: 0.9, marginBottom: '24px' }}>
+      <main style={{ flex: 1, padding: '40px 48px', overflowY: 'auto' }}>
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          style={{ 
+            background: 'linear-gradient(135deg, var(--primary-indigo), var(--primary-dark))',
+            borderRadius: '24px',
+            padding: '48px',
+            color: 'white',
+            marginBottom: '48px',
+            boxShadow: '0 12px 32px rgba(132, 169, 140, 0.25)'
+          }}
+        >
+          <h1 style={{ fontSize: '40px', marginBottom: '16px', letterSpacing: '-0.02em', color: 'white' }}>Find your next skill.</h1>
+          <p style={{ fontSize: '18px', color: 'rgba(255, 255, 255, 0.9)', marginBottom: '32px' }}>
             Connect with amazing teachers in your local neighbourhood right now.
           </p>
           <button style={{ 
-            backgroundColor: 'white', color: 'var(--primary-blue)', 
-            padding: '12px 24px', borderRadius: '10px', fontWeight: 'bold' 
+            backgroundColor: 'var(--card-bg)', color: 'var(--primary-dark)', 
+            padding: '14px 28px', borderRadius: '12px', fontWeight: 'bold', border: 'none', cursor: 'pointer',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
           }} onClick={() => window.scrollTo({ top: 400, behavior: 'smooth'})}>
             Browse Skills →
           </button>
-        </div>
+        </motion.div>
 
-        <section style={{ marginBottom: '48px' }}>
-          <h2 style={{ marginBottom: '24px' }}>Skill Categories</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '16px' }}>
+        <section style={{ marginBottom: '56px' }}>
+          <h2 style={{ marginBottom: '24px', fontSize: '24px' }}>Skill Categories</h2>
+          <motion.div 
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: { opacity: 0 },
+              visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+            }}
+            style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '16px' }}
+          >
             {CATEGORIES.map(cat => (
-              <CategoryCard 
-                key={cat.id} 
-                icon={cat.icon} 
-                label={cat.id} 
-                onClick={() => navigate(`/learner/category/${cat.id}`)} 
-              />
+              <motion.div key={cat.id} variants={{ hidden: { y: 20, opacity: 0 }, visible: { y: 0, opacity: 1 } }}>
+                <CategoryCard 
+                  icon={cat.icon} 
+                  label={cat.id} 
+                  onClick={() => navigate(`/learner/category/${cat.id}`)} 
+                />
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </section>
 
         <section>
-          <h2 style={{ marginBottom: '24px' }}>Teachers Nearby</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
+          <h2 style={{ marginBottom: '24px', fontSize: '24px' }}>Teachers Nearby</h2>
+          <motion.div 
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3, duration: 0.5 }}
+            style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}
+          >
             {teachers.map(teacher => (
               <TeacherCard 
                 key={teacher.id} 
@@ -74,18 +94,18 @@ export default function LearnerDashboard() {
                 onTrial={() => navigate(`/learner/category/${teacher.category}`)}
               />
             ))}
-          </div>
+          </motion.div>
           {teachers.length === 0 && <p className="text-muted">No teachers found nearby yet.</p>}
         </section>
       </main>
 
-      <aside style={{ width: '280px', backgroundColor: 'white', borderLeft: '1px solid var(--border-color)', padding: '32px 24px' }}>
+      <aside style={{ width: '300px', backgroundColor: 'var(--bg-color-light)', borderLeft: '1px solid var(--border-color)', padding: '40px 24px' }}>
         <h3 style={{ marginBottom: '24px' }}>Quick Summary</h3>
-        <div className="card" style={{ padding: '16px', marginBottom: '16px' }}>
-          <div style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--primary-blue)' }}>12+</div>
-          <div className="text-muted" style={{ fontSize: '14px' }}>Teachers active today</div>
-        </div>
-        <p className="text-muted" style={{ fontSize: '14px' }}>Head over to "My Enrollments" to check the status of your requests.</p>
+        <motion.div whileHover={{ scale: 1.02 }} className="card" style={{ padding: '20px', marginBottom: '24px', border: '1px solid var(--card-border)' }}>
+          <div style={{ fontSize: '32px', fontWeight: 'bold', color: 'var(--primary-indigo)' }}>12+</div>
+          <div className="text-muted" style={{ fontSize: '15px' }}>Teachers active today</div>
+        </motion.div>
+        <p className="text-muted" style={{ fontSize: '15px', lineHeight: '1.6' }}>Head over to <strong>My Enrollments</strong> to check the status of your requests.</p>
       </aside>
     </div>
   );

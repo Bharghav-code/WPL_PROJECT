@@ -34,7 +34,7 @@ export default function Sidebar({ role }) {
   return (
     <div style={{
       width: '240px',
-      backgroundColor: 'white',
+      backgroundColor: 'var(--bg-color-light)',
       borderRight: '1px solid var(--border-color)',
       height: '100vh',
       display: 'flex',
@@ -42,13 +42,13 @@ export default function Sidebar({ role }) {
       padding: '24px 0'
     }}>
       <div style={{ padding: '0 24px', marginBottom: '32px' }}>
-        <h2 style={{ color: 'var(--primary-blue)', marginBottom: '8px' }}>SkillShare</h2>
+        <h2 style={{ color: 'var(--primary-indigo)', marginBottom: '8px' }}>SkillShare</h2>
         <div className="flex items-center gap-2" style={{ marginTop: '16px' }}>
-          <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: 'var(--bg-color)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>
+          <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: 'var(--bg-color)', border: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>
             {user?.name?.charAt(0) || 'U'}
           </div>
           <div>
-            <div style={{ fontWeight: '600', fontSize: '14px' }}>{user.name}</div>
+            <div style={{ fontWeight: '600', fontSize: '14px', color: 'var(--text-primary)' }}>{user.name}</div>
             <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>📍 {user.location}</div>
           </div>
         </div>
@@ -68,10 +68,10 @@ export default function Sidebar({ role }) {
                     alignItems: 'center',
                     gap: '12px',
                     padding: '12px 24px',
-                    color: isActive ? 'var(--primary-blue)' : 'var(--text-secondary)',
-                    backgroundColor: isActive ? '#EFF6FF' : 'transparent',
-                    borderLeft: isActive ? '3px solid var(--primary-blue)' : '3px solid transparent',
-                    fontWeight: isActive ? '600' : '400',
+                    color: isActive ? 'var(--primary-indigo)' : 'var(--text-secondary)',
+                    backgroundColor: isActive ? 'rgba(132, 169, 140, 0.1)' : 'transparent',
+                    borderLeft: isActive ? '3px solid var(--primary-indigo)' : '3px solid transparent',
+                    fontWeight: isActive ? '600' : '500',
                     transition: 'all 0.2s'
                   }}
                 >
@@ -90,7 +90,7 @@ export default function Sidebar({ role }) {
           style={{
             display: 'flex', alignItems: 'center', gap: '8px', 
             color: 'var(--danger-color)', backgroundColor: 'transparent',
-            padding: '8px 0', fontSize: '14px', fontWeight: '500'
+            padding: '8px 0', fontSize: '14px', fontWeight: '600'
           }}
         >
           <LogOut size={18} /> Logout
