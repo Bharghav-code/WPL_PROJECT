@@ -123,7 +123,7 @@ def handle_listings():
         
         query = '''
             SELECT l.id, l.teacher_id, l.category, l.subcategory, l.description, l.availability, l.trial_info, l.distance_km,
-                   u.name as teacher_name, u.location as teacher_location
+                   u.name as teacher_name, u.location as teacher_location, u.email as teacher_email, u.bio as teacher_bio, u.social_links as teacher_social_links
             FROM listings l
             JOIN users u ON l.teacher_id = u.id
             WHERE l.distance_km <= ?
@@ -260,7 +260,7 @@ def get_learner_enrollments():
     conn = get_db_connection()
     c = conn.cursor()
     enrollments = c.execute('''
-        SELECT e.id, e.type, e.status, l.category, l.subcategory, u.name as teacher_name
+        SELECT e.id, e.type, e.status, l.category, l.subcategory, u.name as teacher_name, u.email as teacher_email, u.bio as teacher_bio, u.social_links as teacher_social_links
         FROM enrollments e
         JOIN listings l ON e.listing_id = l.id
         JOIN users u ON l.teacher_id = u.id
