@@ -8,6 +8,7 @@ import MyEnrollments from './pages/MyEnrollments';
 import TeacherDashboard from './pages/TeacherDashboard';
 import ListSkill from './pages/ListSkill';
 import MyListings from './pages/MyListings';
+import TeacherRequests from './pages/TeacherRequests';
 
 // Simple PrivateRoute wrapper
 const PrivateRoute = ({ children }) => {
@@ -49,6 +50,10 @@ function App() {
         
         <Route path="/teacher/my-listings" element={
           <PrivateRoute><MyListings /></PrivateRoute>
+        } />
+
+        <Route path="/teacher/requests" element={
+          <PrivateRoute><TeacherRequests /></PrivateRoute>
         } />
 
         {/* Redirect unknown to login */}
