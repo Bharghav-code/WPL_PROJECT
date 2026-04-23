@@ -10,6 +10,7 @@ import ListSkill from './pages/ListSkill';
 import MyListings from './pages/MyListings';
 import TeacherRequests from './pages/TeacherRequests';
 import ProfileSettings from './pages/ProfileSettings';
+import FAQ from './pages/FAQ';
 import Footer from './components/Footer';
 
 // Simple PrivateRoute wrapper
@@ -63,6 +64,8 @@ function App() {
         <Route path="/profile" element={
           <PrivateRoute><ProfileSettings /></PrivateRoute>
         } />
+
+        <Route path="/faq" element={<FAQ />} />
 
         {/* Redirect unknown to login */}
         <Route path="*" element={<Navigate to="/login" />} />
