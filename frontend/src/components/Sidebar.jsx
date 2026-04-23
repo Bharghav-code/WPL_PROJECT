@@ -22,8 +22,8 @@ export default function Sidebar({ role }) {
   const teacherLinks = [
     { name: 'Dashboard', path: '/teacher/dashboard', icon: <Home size={20} /> },
     { name: 'List a Skill', path: '/teacher/list-skill', icon: <PlusCircle size={20} /> },
-    { name: 'My Listings', path: '#', icon: <List size={20} /> },
-    { name: 'Requests', path: '#', icon: <Mail size={20} /> },
+    { name: 'My Listings', path: '/teacher/my-listings', icon: <List size={20} /> },
+    { name: 'Requests', path: '/teacher/requests', icon: <Mail size={20} /> },
     { name: 'Settings', path: '#', icon: <Settings size={20} /> }
   ];
 

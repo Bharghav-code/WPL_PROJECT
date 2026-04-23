@@ -116,6 +116,54 @@ def handle_listings():
         conn.close()
         return jsonify({'message': 'Listing created', 'id': listing_id}), 201
 
+@app.route('/api/listings/mine', methods=['GET'])
+def get_my_listings():
+    user_id = get_current_user_id(request)
+    if not user_id:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    conn = get_db_connection()
+    c = conn.cursor()
+    listings = c.execute('''
+        SELECT l.id, l.category, l.subcategory, l.description, l.availability, l.trial_info, l.created_at,
+               (SELECT COUNT(*) FROM enrollments e WHERE e.listing_id = l.id AND e.status = 'accepted') as student_count
+        FROM listings l
+        WHERE l.teacher_id = ?
+        ORDER BY l.created_at DESC
+    ''', (user_id,)).fetchall()
+    conn.close()
+    return jsonify([dict(row) for row in listings]), 200
+
+@app.route('/api/listings/<int:id>/students', methods=['GET'])
+def get_listing_students(id):
+    user_id = get_current_user_id(request)
+    if not user_id:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    conn = get_db_connection()
+    c = conn.cursor()
+
+    # Verify teacher owns this listing
+    listing = c.execute('SELECT teacher_id, subcategory, category FROM listings WHERE id = ?', (id,)).fetchone()
+    if not listing:
+        conn.close()
+        return jsonify({'error': 'Not found'}), 404
+    if listing['teacher_id'] != user_id:
+        conn.close()
+        return jsonify({'error': 'Forbidden'}), 403
+
+    students = c.execute('''
+        SELECT u.id, u.name, u.email, u.location, e.type, e.status
+        FROM enrollments e
+        JOIN users u ON e.learner_id = u.id
+        WHERE e.listing_id = ? AND e.status = 'accepted'
+    ''', (id,)).fetchall()
+    conn.close()
+    return jsonify({
+        'listing': {'id': id, 'subcategory': listing['subcategory'], 'category': listing['category']},
+        'students': [dict(s) for s in students]
+    }), 200
+
 @app.route('/api/listings/<int:id>', methods=['DELETE'])
 def delete_listing(id):
     user_id = get_current_user_id(request)
@@ -199,6 +247,27 @@ def get_teacher_enrollments():
     ''', (user_id,)).fetchall()
     conn.close()
     
+    return jsonify([dict(row) for row in enrollments]), 200
+
+@app.route('/api/enrollments/teacher/all', methods=['GET'])
+def get_all_teacher_enrollments():
+    user_id = get_current_user_id(request)
+    if not user_id:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    conn = get_db_connection()
+    c = conn.cursor()
+    enrollments = c.execute('''
+        SELECT e.id, e.type, e.status, l.id as listing_id, l.category, l.subcategory, u.name as learner_name, u.email as learner_email
+        FROM enrollments e
+        JOIN listings l ON e.listing_id = l.id
+        JOIN users u ON e.learner_id = u.id
+        WHERE l.teacher_id = ?
+        ORDER BY
+            CASE e.status WHEN 'pending' THEN 0 WHEN 'accepted' THEN 1 WHEN 'rejected' THEN 2 END,
+            e.id DESC
+    ''', (user_id,)).fetchall()
+    conn.close()
     return jsonify([dict(row) for row in enrollments]), 200
 
 @app.route('/api/enrollments/<int:id>/status', methods=['PATCH'])

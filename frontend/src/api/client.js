@@ -88,5 +88,29 @@ export const api = {
         });
         if (!res.ok) throw new Error('Failed to update status');
         return res.json();
+    },
+
+    async getMyListings() {
+        const res = await fetch(`${API_BASE}/listings/mine`, {
+            headers: getAuthHeaders()
+        });
+        if (!res.ok) throw new Error('Failed to fetch my listings');
+        return res.json();
+    },
+
+    async getListingStudents(listingId) {
+        const res = await fetch(`${API_BASE}/listings/${listingId}/students`, {
+            headers: getAuthHeaders()
+        });
+        if (!res.ok) throw new Error('Failed to fetch students');
+        return res.json();
+    },
+
+    async getAllTeacherEnrollments() {
+        const res = await fetch(`${API_BASE}/enrollments/teacher/all`, {
+            headers: getAuthHeaders()
+        });
+        if (!res.ok) throw new Error('Failed to fetch all requests');
+        return res.json();
     }
 };

@@ -29,6 +29,7 @@ def init_db():
             availability TEXT NOT NULL,
             trial_info TEXT,
             distance_km REAL NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (teacher_id) REFERENCES users (id)
         )
     ''')
