@@ -9,6 +9,8 @@ import TeacherDashboard from './pages/TeacherDashboard';
 import ListSkill from './pages/ListSkill';
 import MyListings from './pages/MyListings';
 import TeacherRequests from './pages/TeacherRequests';
+import ProfileSettings from './pages/ProfileSettings';
+import Footer from './components/Footer';
 
 // Simple PrivateRoute wrapper
 const PrivateRoute = ({ children }) => {
@@ -19,6 +21,8 @@ const PrivateRoute = ({ children }) => {
 function App() {
   return (
     <Router>
+      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
@@ -56,9 +60,16 @@ function App() {
           <PrivateRoute><TeacherRequests /></PrivateRoute>
         } />
 
+        <Route path="/profile" element={
+          <PrivateRoute><ProfileSettings /></PrivateRoute>
+        } />
+
         {/* Redirect unknown to login */}
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
+      </div>
+      <Footer />
+      </div>
     </Router>
   );
 }

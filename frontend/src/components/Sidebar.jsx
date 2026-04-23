@@ -16,7 +16,7 @@ export default function Sidebar({ role }) {
   const learnerLinks = [
     { name: 'Dashboard', path: '/learner/dashboard', icon: <Home size={20} /> },
     { name: 'My Enrollments', path: '/learner/enrollments', icon: <BookOpen size={20} /> },
-    { name: 'Settings', path: '/learner/settings', icon: <Settings size={20} /> }
+    { name: 'Settings', path: '/profile', icon: <Settings size={20} /> }
   ];
 
   const teacherLinks = [
@@ -24,7 +24,7 @@ export default function Sidebar({ role }) {
     { name: 'List a Skill', path: '/teacher/list-skill', icon: <PlusCircle size={20} /> },
     { name: 'My Listings', path: '/teacher/my-listings', icon: <List size={20} /> },
     { name: 'Requests', path: '/teacher/requests', icon: <Mail size={20} /> },
-    { name: 'Settings', path: '#', icon: <Settings size={20} /> }
+    { name: 'Settings', path: '/profile', icon: <Settings size={20} /> }
   ];
 
   const links = role === 'teacher' ? teacherLinks : learnerLinks;
