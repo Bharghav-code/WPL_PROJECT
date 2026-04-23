@@ -21,6 +21,18 @@ export default function Login() {
     }
   };
 
+  const handleDemoLogin = async (role) => {
+    try {
+      const demoEmail = role === 'teacher' ? 'rahul@example.com' : 'learner@test.com';
+      const res = await api.login(demoEmail, 'password123');
+      localStorage.setItem('token', res.token);
+      localStorage.setItem('user', JSON.stringify(res.user));
+      navigate(role === 'teacher' ? '/teacher/dashboard' : '/learner/dashboard');
+    } catch (err) {
+      setError('Demo login failed: ' + err.message);
+    }
+  };
+
   return (
     <div style={{ display: 'flex', height: '100vh' }}>
       {/* Left Panel */}
@@ -74,6 +86,25 @@ export default function Login() {
               Sign In →
             </button>
           </form>
+
+          <div style={{ display: 'flex', gap: '12px', marginTop: '24px' }}>
+            <button 
+              type="button" 
+              className="secondary-btn" 
+              style={{ flex: 1, padding: '10px' }}
+              onClick={() => handleDemoLogin('learner')}
+            >
+              Demo Learner
+            </button>
+            <button 
+              type="button" 
+              className="secondary-btn" 
+              style={{ flex: 1, padding: '10px' }}
+              onClick={() => handleDemoLogin('teacher')}
+            >
+              Demo Teacher
+            </button>
+          </div>
 
           <div style={{ textAlign: 'center', marginTop: '24px', fontSize: '14px' }}>
             <span className="text-muted">New here? </span>

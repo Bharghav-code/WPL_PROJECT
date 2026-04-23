@@ -238,4 +238,4 @@ def update_enrollment_status(id):
     return jsonify({'message': 'Status updated'}), 200
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=5001)
