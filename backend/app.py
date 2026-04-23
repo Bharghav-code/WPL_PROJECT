@@ -72,6 +72,46 @@ def login():
     return jsonify({'error': 'Invalid email or password'}), 401
 
 
+@app.route('/api/profile', methods=['GET', 'PUT'])
+def profile():
+    user_id = get_current_user_id(request)
+    if not user_id:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    conn = get_db_connection()
+    c = conn.cursor()
+
+    if request.method == 'GET':
+        user = c.execute('SELECT id, name, email, location, profile_photo, bio, languages, social_links FROM users WHERE id = ?', (user_id,)).fetchone()
+        conn.close()
+        if user:
+            return jsonify(dict(user)), 200
+        return jsonify({'error': 'User not found'}), 404
+
+    elif request.method == 'PUT':
+        data = request.json
+        name = data.get('name')
+        email = data.get('email')
+        location = data.get('location')
+        profile_photo = data.get('profile_photo')
+        bio = data.get('bio')
+        languages = data.get('languages')
+        social_links = data.get('social_links')
+        
+        try:
+            c.execute('''
+                UPDATE users 
+                SET name = ?, email = ?, location = ?, profile_photo = ?, bio = ?, languages = ?, social_links = ?
+                WHERE id = ?
+            ''', (name, email, location, profile_photo, bio, languages, social_links, user_id))
+            conn.commit()
+            conn.close()
+            return jsonify({'message': 'Profile updated successfully'}), 200
+        except sqlite3.IntegrityError:
+            conn.close()
+            return jsonify({'error': 'Email already exists'}), 409
+
+
 @app.route('/api/listings', methods=['GET', 'POST'])
 def handle_listings():
     conn = get_db_connection()

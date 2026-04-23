@@ -15,9 +15,34 @@ def init_db():
             name TEXT NOT NULL,
             email TEXT UNIQUE NOT NULL,
             password TEXT NOT NULL,
-            location TEXT NOT NULL
+            location TEXT NOT NULL,
+            profile_photo TEXT,
+            bio TEXT,
+            languages TEXT,
+            social_links TEXT
         )
     ''')
+
+    # Add columns if they do not exist
+    try:
+        c.execute('ALTER TABLE users ADD COLUMN profile_photo TEXT')
+    except sqlite3.OperationalError:
+        pass
+
+    try:
+        c.execute('ALTER TABLE users ADD COLUMN bio TEXT')
+    except sqlite3.OperationalError:
+        pass
+
+    try:
+        c.execute('ALTER TABLE users ADD COLUMN languages TEXT')
+    except sqlite3.OperationalError:
+        pass
+
+    try:
+        c.execute('ALTER TABLE users ADD COLUMN social_links TEXT')
+    except sqlite3.OperationalError:
+        pass
 
     c.execute('''
         CREATE TABLE IF NOT EXISTS listings (
