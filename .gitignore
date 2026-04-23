@@ -3,3 +3,5 @@ backend/__pycache__/
 node_modules/
 .DS_Store
 *.db
+backend/database.db
+backend/database.db
