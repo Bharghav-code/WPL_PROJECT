@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Footer() {
   return (
@@ -7,17 +8,18 @@ export default function Footer() {
       padding: '24px',
       borderTop: '1px solid var(--border-color)',
       backgroundColor: 'var(--bg-color-light)',
-      color: 'var(--text-secondary)',
       fontSize: '14px',
       textAlign: 'center',
       marginTop: 'auto'
     }}>
-      <span>support: </span>
-      <a href="#" style={{ color: 'var(--primary-indigo)', textDecoration: 'none', margin: '0 4px' }}>Help center</a>, 
-      <a href="#" style={{ color: 'var(--primary-indigo)', textDecoration: 'none', margin: '0 4px' }}>FAQs</a>, 
-      <a href="#" style={{ color: 'var(--primary-indigo)', textDecoration: 'none', margin: '0 4px' }}>Contact us</a> 
+      <span style={{ fontWeight: 'bold' }}>Support : </span>
+      <Link to="/help" style={{ color: 'var(--primary-indigo)', textDecoration: 'none', margin: '0 8px' }}>Help Center</Link> 
       {' | '}
-      <a href="#" style={{ color: 'var(--danger-color)', textDecoration: 'none', margin: '0 4px' }}>report issue</a>
+      <Link to="/faq" style={{ color: 'var(--primary-indigo)', textDecoration: 'none', margin: '0 8px' }}>FAQs</Link> 
+      {' | '}
+      <Link to="/contact" style={{ color: 'var(--primary-indigo)', textDecoration: 'none', margin: '0 8px' }}>Contact Us</Link> 
+      {' | '}
+      <Link to="/report" style={{ color: 'var(--primary-indigo)', textDecoration: 'none', margin: '0 8px' }}>Report Issue</Link>
     </footer>
   );
 }
