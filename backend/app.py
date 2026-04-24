@@ -149,7 +149,7 @@ def handle_listings():
             INSERT INTO listings (teacher_id, category, subcategory, description, availability, trial_info, distance_km)
             VALUES (?, ?, ?, ?, ?, ?, ?)
         ''', (user_id, data['category'], data['subcategory'], data['description'], 
-              data['availability'], data.get('trial_info', ''), 0.0)) # 0 distance for their own listing
+              data['availability'], data.get('trial_info', ''), data.get('distance_km', 0.0)))
         
         conn.commit()
         listing_id = c.lastrowid

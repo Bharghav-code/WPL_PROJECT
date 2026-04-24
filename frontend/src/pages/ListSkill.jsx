@@ -20,7 +20,8 @@ export default function ListSkill() {
     description: '',
     availability: '',
     hasTrial: false,
-    trial_info: ''
+    trial_info: '',
+    distance_km: 0
   });
   const [error, setError] = useState('');
 
@@ -37,7 +38,8 @@ export default function ListSkill() {
         subcategory: formData.subcategory,
         description: formData.description,
         availability: formData.availability,
-        trial_info: formData.hasTrial ? formData.trial_info : ''
+        trial_info: formData.hasTrial ? formData.trial_info : '',
+        distance_km: parseFloat(formData.distance_km) || 0
       });
       navigate('/teacher/dashboard');
     } catch (err) {
@@ -109,7 +111,22 @@ export default function ListSkill() {
           </div>
 
           <div className="card flex-col gap-3">
-            <h3 style={{ marginBottom: '8px' }}>3. Trial Session</h3>
+            <h3 style={{ marginBottom: '8px' }}>3. Distance</h3>
+            <div>
+              <label className="text-muted" style={{ fontSize: '12px', display: 'block', marginBottom: '8px' }}>How far away are you? (in km)</label>
+              <input 
+                type="number" 
+                min="0"
+                step="0.1"
+                placeholder="E.g., 2.5"
+                value={formData.distance_km}
+                onChange={e => setFormData({...formData, distance_km: e.target.value})}
+              />
+            </div>
+          </div>
+
+          <div className="card flex-col gap-3">
+            <h3 style={{ marginBottom: '8px' }}>4. Trial Session</h3>
             <label className="flex items-center gap-2" style={{ cursor: 'pointer' }}>
               <input 
                 type="checkbox" 
