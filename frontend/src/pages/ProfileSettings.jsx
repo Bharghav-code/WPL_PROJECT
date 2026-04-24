@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import { motion } from 'framer-motion';
 
@@ -17,11 +18,14 @@ export default function ProfileSettings() {
   const [error, setError] = useState('');
 
   const user = JSON.parse(localStorage.getItem('user') || '{}');
-  // Determine role based on what's available or default to learner just for sidebar display mapping.
-  // Actually sidebar uses "role" prop but settings is common. We can check current path or previous location.
-  // A simple hack is assigning role to 'learner' by default unless they are a teacher. Let's rely on local storage or just pass a generic role if we can't tell, though the sidebar needs it.
-  // For context, user might be teacher or learner. We don't store role in localstorage right now. We'll just assume learner for sidebar rendering or you can navigate back.
-  // Let's hide the active highlight if we can't tell, or pass a role based on their last visited dashboard.
+  const location = useLocation();
+  
+  // Determine role based on location state (passed from Sidebar click) or fallback to last known role
+  const currentRole = location.state?.role || localStorage.getItem('currentRole') || 'learner';
+
+  useEffect(() => {
+    localStorage.setItem('currentRole', currentRole);
+  }, [currentRole]);
 
   useEffect(() => {
     fetch('http://127.0.0.1:5001/api/profile', {
@@ -94,7 +98,7 @@ export default function ProfileSettings() {
 
   return (
     <div className="flex" style={{ backgroundColor: 'var(--bg-color)', minHeight: '100vh' }}>
-      <Sidebar role="learner" /> {/* We just pass learner to render Sidebar; settings link works anyway */}
+      <Sidebar role={currentRole} />
       
       <main style={{ flex: 1, padding: '40px 48px', overflowY: 'auto' }}>
         <motion.div 

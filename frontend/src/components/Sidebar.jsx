@@ -62,7 +62,7 @@ export default function Sidebar({ role }) {
               <li key={link.name}>
                 <a 
                   href="javascript:void(0)"
-                  onClick={(e) => { e.preventDefault(); navigate(link.path); }}
+                  onClick={(e) => { e.preventDefault(); navigate(link.path, { state: { role } }); }}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
